@@ -1,0 +1,12 @@
+services:
+  localstack:
+    image: localstack/localstack:4.9.2
+    ports:
+      - "127.0.0.1:4566:4566"      # LocalStack Gateway for AWS services
+    environment:
+      - SERVICES=ec2
+    volumes:
+      - "localstack_data:/var/lib/localstack"
+
+volumes:
+  localstack_data:
