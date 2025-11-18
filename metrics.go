@@ -35,17 +35,3 @@ var reorderLatency = promauto.NewHistogramVec(
 	},
 	[]string{"server"},
 )
-
-// func init() {
-// 	metrics.Register(metrics.RegisterOpts{
-// 		RequestLatency: &latencyAdapter{m: requestLatency},
-// 	})
-// }
-
-// type latencyAdapter struct {
-// 	m *prometheus.HistogramVec
-// }
-
-// func (l *latencyAdapter) Observe(_ context.Context, latency time.Duration) {
-// 	l.m.WithLabelValues(verb, u.Host).Observe(latency.Seconds())
-// }

@@ -106,7 +106,7 @@ func TestSetupWithLocalStack(t *testing.T) {
 		t.Fatalf("Expected zone '%s' to be configured, but it was not found.", azID)
 	}
 
-		found := false
+	found := false
 	for _, prefix := range currentZone.CIDRs {
 		if prefix.String() == subnetCIDR {
 			found = true

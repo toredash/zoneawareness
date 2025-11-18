@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	clog "github.com/coredns/coredns/plugin/pkg/log"
-	"github.com/coredns/coredns/plugin/pkg/dnstest"
-	"github.com/coredns/coredns/plugin/test"
 	"github.com/coredns/coredns/plugin"
+	"github.com/coredns/coredns/plugin/pkg/dnstest"
+	clog "github.com/coredns/coredns/plugin/pkg/log"
+	"github.com/coredns/coredns/plugin/test"
 
 	"github.com/miekg/dns"
 )
@@ -50,9 +50,9 @@ func TestZoneawareness(t *testing.T) {
 	m := new(dns.Msg)
 	m.SetReply(r)
 	m.Answer = []dns.RR{
-		test.A("example.org. 300 IN A 10.0.0.1"),   // Matches CIDR
+		test.A("example.org. 300 IN A 10.0.0.1"),    // Matches CIDR
 		test.A("example.org. 300 IN A 192.168.1.1"), // Does not match CIDR
-		test.A("example.org. 300 IN A 10.0.0.2"),   // Matches CIDR
+		test.A("example.org. 300 IN A 10.0.0.2"),    // Matches CIDR
 	}
 
 	// Create a mock handler that returns our mock message.
@@ -110,9 +110,9 @@ func TestZoneawarenessDebug(t *testing.T) {
 	m := new(dns.Msg)
 	m.SetReply(r)
 	m.Answer = []dns.RR{
-		test.A("example.org. 300 IN A 10.0.0.1"),   // Matches CIDR
+		test.A("example.org. 300 IN A 10.0.0.1"),    // Matches CIDR
 		test.A("example.org. 300 IN A 192.168.1.1"), // Does not match CIDR
-		test.A("example.org. 300 IN A 10.0.0.2"),   // Matches CIDR
+		test.A("example.org. 300 IN A 10.0.0.2"),    // Matches CIDR
 	}
 
 	// Create a mock handler that returns our mock message.
@@ -148,20 +148,20 @@ func TestZoneawarenessCases(t *testing.T) {
 	x.Zones["use2-az2"] = &Zone{CIDRs: []*net.IPNet{az2Cidr, az2CidrAAAA}}
 
 	tests := []struct {
-		name                  string
-		zoneId                string
-		question              dns.Question
-		upstreamAnswers       []dns.RR
-		expectedAnswers       []string // string representation of the RR
-		expectReordering      bool
-		expectedRcode         int
-		handler               plugin.Handler
+		name             string
+		zoneId           string
+		question         dns.Question
+		upstreamAnswers  []dns.RR
+		expectedAnswers  []string // string representation of the RR
+		expectReordering bool
+		expectedRcode    int
+		handler          plugin.Handler
 	}{
 		{
-			name:             "multi-multi-a-az2",
-			zoneId:           "use2-az2",
-			question:         dns.Question{Name: "multi-multi-a.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
-            upstreamAnswers: []dns.RR{
+			name:     "multi-multi-a-az2",
+			zoneId:   "use2-az2",
+			question: dns.Question{Name: "multi-multi-a.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
+			upstreamAnswers: []dns.RR{
 				test.A("multi-multi-a.coredns.io. 300 IN A 192.0.2.1"),
 				test.A("multi-multi-a.coredns.io. 300 IN A 192.2.0.1"),
 				test.A("multi-multi-a.coredns.io. 300 IN A 192.2.0.2"),
@@ -176,9 +176,9 @@ func TestZoneawarenessCases(t *testing.T) {
 			expectReordering: true,
 		},
 		{
-			name:             "multi-mixed-a-az1",
-			zoneId:           "use2-az1",
-			question:         dns.Question{Name: "multi-mixed.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
+			name:     "multi-mixed-a-az1",
+			zoneId:   "use2-az1",
+			question: dns.Question{Name: "multi-mixed.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
 			upstreamAnswers: []dns.RR{
 				test.A("multi-mixed.coredns.io. 300 IN A 192.2.0.31"),
 				test.A("multi-mixed.coredns.io. 300 IN A 192.0.2.31"),
@@ -190,9 +190,9 @@ func TestZoneawarenessCases(t *testing.T) {
 			expectReordering: true,
 		},
 		{
-			name:             "multi-mixed-aaaa-az1",
-			zoneId:           "use2-az1",
-			question:         dns.Question{Name: "multi-mixed.coredns.io.", Qtype: dns.TypeAAAA, Qclass: dns.ClassINET},
+			name:     "multi-mixed-aaaa-az1",
+			zoneId:   "use2-az1",
+			question: dns.Question{Name: "multi-mixed.coredns.io.", Qtype: dns.TypeAAAA, Qclass: dns.ClassINET},
 			upstreamAnswers: []dns.RR{
 				test.AAAA("multi-mixed.coredns.io. 300 IN AAAA 2001:db8:2::32"),
 				test.AAAA("multi-mixed.coredns.io. 300 IN AAAA 2001:db8:1::32"),
@@ -204,9 +204,9 @@ func TestZoneawarenessCases(t *testing.T) {
 			expectReordering: true,
 		},
 		{
-			name:             "multi-no-match",
-			zoneId:           "use2-az1",
-			question:         dns.Question{Name: "multi-no-match.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
+			name:     "multi-no-match",
+			zoneId:   "use2-az1",
+			question: dns.Question{Name: "multi-no-match.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
 			upstreamAnswers: []dns.RR{
 				test.A("multi-no-match.coredns.io. 300 IN A 198.51.100.1"),
 				test.A("multi-no-match.coredns.io. 300 IN A 198.51.100.2"),
@@ -221,8 +221,8 @@ func TestZoneawarenessCases(t *testing.T) {
 			name:             "no-answers",
 			zoneId:           "use2-az1",
 			question:         dns.Question{Name: "no-answers.coredns.io.", Qtype: dns.TypeA, Qclass: dns.ClassINET},
-			upstreamAnswers: []dns.RR{},
-			expectedAnswers: []string{},
+			upstreamAnswers:  []dns.RR{},
+			expectedAnswers:  []string{},
 			expectReordering: false,
 		},
 	}
