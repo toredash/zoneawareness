@@ -7,12 +7,12 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
-// requestCount exports a prometheus metric that is incremented every time a response is re-ordered by the zoneawareness plugin.
-var requestCount = promauto.NewCounterVec(prometheus.CounterOpts{
+// reorderedQueriesCount exports a prometheus metric that is incremented every time a query's response is re-ordered.
+var reorderedQueriesCount = promauto.NewCounterVec(prometheus.CounterOpts{
 	Namespace: plugin.Namespace,
 	Subsystem: pluginName,
-	Name:      "queries_count_total",
-	Help:      "Number of queries that have been successfully processed by the zoneawareness plugin",
+	Name:      "reordered_queries_total",
+	Help:      "Total number of DNS queries that had their responses reordered by the zoneawareness plugin.",
 }, []string{"server"})
 
 // reorderCount exports a prometheus metric that is incremented by the number of responses that is re-ordered by the zoneawareness plugin.
@@ -23,7 +23,7 @@ var reorderCount = promauto.NewCounterVec(prometheus.CounterOpts{
 	Help:      "Number of records that was reordered by the zoneawareness plugin",
 }, []string{"server"})
 
-// reorderLatency
+// reorderLatency is used to track the time spent to reorder DNS responses
 var reorderLatency = promauto.NewHistogramVec(
 	prometheus.HistogramOpts{
 		Namespace:                   plugin.Namespace,

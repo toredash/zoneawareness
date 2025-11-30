@@ -80,7 +80,7 @@ func (e Zoneawareness) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 	pw.msg.Answer = append(preferredAnswers, otherAnswers...)
 
 	// Increase counter to indicate a query was reordered
-	requestCount.WithLabelValues(metrics.WithServer(ctx)).Inc()
+	reorderedQueriesCount.WithLabelValues(metrics.WithServer(ctx)).Inc()
 
 	// Increase reorder count by the number of preferred answers
 	reorderCount.WithLabelValues(metrics.WithServer(ctx)).Add(float64(len(preferredAnswers)))
