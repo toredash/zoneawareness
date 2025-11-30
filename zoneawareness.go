@@ -136,7 +136,6 @@ func NewResponsePrinter(w dns.ResponseWriter) *ResponsePrinter {
 }
 
 // WriteMsg implements the dns.ResponseWriter interface. It is called when a response is written.
-// TODO: Should this always return nil?
 func (r *ResponsePrinter) WriteMsg(res *dns.Msg) error {
 	r.msg = res
 	return nil
