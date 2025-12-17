@@ -23,7 +23,9 @@ alb-or-similar-multi-az-service.eu-central-1.elb.amazonaws.com. 60 IN A 192.168.
 alb-or-similar-multi-az-service.eu-central-1.elb.amazonaws.com. 60 IN A 192.168.1.68 (euc1-az3)
 ```
 
-Additional CIDR-to-AZ mapping can be added to the configuration to enable same-AZ communication across AWS accounts and VPC peerings, and is the preferred way to use enable this plugin for on-prem setup with multiple datacenters/zones.
+The plugin automatically discovers all subnets in the current VPC and maps them to their respective Availability Zones. This allows it to reorder DNS answers for any service within the VPC.
+
+For on-prem setups, cross AWS accounts/VPC peerings or when automatic discovery is not possible, CIDR-to-AZ mappings can be added manually. It operates only on queries that is relevant to the Availability Zone where it is running. In other words; It will only process and reorder IPs for subnets that are mapped to its local zone.
 
 Users of EKS might want to try my nodelocal dnscache container image published at this repository. 
 
